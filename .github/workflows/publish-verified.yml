@@ -1,0 +1,58 @@
+name: Publish previously verified preview
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/publish-verified.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  publish:
+    if: github.repository == 'mizanurofcl55-hue/FLOW-SHARE'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+    concurrency:
+      group: public-preview-v0.1.0-preview.1
+      cancel-in-progress: false
+    env:
+      GH_TOKEN: ${{ github.token }}
+      BUILD_SHA: 2aee1419c6caf235b8d66f9d112819d0cabc439b
+      BUILD_RUN_ID: '40172933417'
+      SMOKE_RUN_ID: '40173388849'
+    steps:
+      - name: Verify exact build and installed-app evidence
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess
+          repo = os.environ['GITHUB_REPOSITORY']
+          def api(path):
+              return json.loads(subprocess.check_output(['gh', 'api', f'repos/{repo}/{path}']))
+          build = api(f"actions/runs/{os.environ['BUILD_RUN_ID']}")
+          assert build['conclusion'] == 'success'
+          assert build['path'] == '.github/workflows/ci.yml'
+          assert build['head_sha'] == os.environ['BUILD_SHA']
+          assert build['head_branch'] == 'main' and build['event'] == 'push'
+          assert build['head_repository']['full_name'] == repo
+          smoke = api(f"actions/runs/{os.environ['SMOKE_RUN_ID']}")
+          assert smoke['path'] == '.github/workflows/android-smoke.yml'
+          assert smoke['head_sha'] == os.environ['BUILD_SHA']
+          assert smoke['event'] == 'workflow_run' and smoke['head_repository']['full_name'] == repo
+          jobs = api(f"actions/runs/{smoke['id']}/jobs?per_page=100")['jobs']
+          installed = [job for job in jobs if job['name'] == 'installed-app']
+          assert len(installed) == 1 and installed[0]['conclusion'] == 'success'
+          print('Exact source build and Android installed-app checks passed')
+          PY
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: FlowShare-*-preview
+          path: release-artifacts
+          run-id: ${{ env.BUILD_RUN_ID }}
+          github-token: ${{ github.token }}
+      - name: Publish the verified bytes
+        run: python3 tool/publish_preview.py

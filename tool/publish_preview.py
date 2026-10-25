@@ -66,7 +66,7 @@ def main():
     provenance = {
         'repository': REPO, 'version': TAG, 'source_commit': sha,
         'build_run': f'https://github.com/{REPO}/actions/runs/{run_id}',
-        'android_smoke_run': f"https://github.com/{REPO}/actions/runs/{os.environ['GITHUB_RUN_ID']}",
+        'android_smoke_run': f"https://github.com/{REPO}/actions/runs/{os.environ.get('SMOKE_RUN_ID', os.environ['GITHUB_RUN_ID'])}",
         'status': 'LAN/hotspot preview; physical interoperability and production signing pending',
         'sha256': hashes,
     }
@@ -83,7 +83,9 @@ def main():
         gh('release', 'create', TAG, '--repo', REPO, '--target', sha, '--draft', '--prerelease',
            '--title', 'FlowShare 0.1.0 — LAN / Hotspot Preview', '--notes-file', 'release-notes.md')
     gh('release', 'upload', TAG, *[str(out / name) for name in sorted(hashes)], '--repo', REPO, '--clobber')
-    release = json.loads(gh('api', f'repos/{REPO}/releases/tags/{TAG}'))
+    # A draft may have no Git tag yet, so the by-tag endpoint can return 404.
+    releases = json.loads(gh('api', f'repos/{REPO}/releases?per_page=100'))
+    release = next(item for item in releases if item['tag_name'] == TAG)
     remote = {asset['name']: asset for asset in release['assets']}
     assert set(remote) == set(hashes), 'Release asset list mismatch'
     for name, value in hashes.items():
