@@ -1,0 +1,27 @@
+name: Bug report
+description: Report a reproducible FlowShare preview problem
+title: '[Bug]: '
+body:
+  - type: input
+    id: versions
+    attributes:
+      label: Device, OS and app version
+      placeholder: Android 15, FlowShare 0.1.0 preview, ARM64
+    validations:
+      required: true
+  - type: dropdown
+    id: connection
+    attributes:
+      label: Connection type
+      options:
+        - Same Wi-Fi / Ethernet LAN
+        - Android local hotspot
+        - System hotspot
+        - App startup or other
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps, expected result and actual result
+      description: Include the visible error. Do not post personal files, pairing links or private information.
+    validations:
+      required: true

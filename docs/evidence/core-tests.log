@@ -1,0 +1,19 @@
+00:00 +0: loading test/transfer_test.dart
+00:00 +0: test/transfer_test.dart: (setUpAll)
+00:00 +0: test/transfer_test.dart: real TLS: empty, Unicode 1 KiB, 1 MiB files; both approvals and matching bytes
+00:01 +1: test/transfer_test.dart: receiver rejection writes no payload
+00:01 +2: test/transfer_test.dart: wrong certificate pin fails before an offer
+00:01 +3: test/transfer_test.dart: insufficient disk space prevents payload
+00:01 +4: test/transfer_test.dart: changed source rejected before reconnect
+00:01 +5: test/transfer_test.dart: cancel then retry reuses only fully verified files
+00:02 +6: test/transfer_test.dart: file mutation after preflight fails checksum without a committed file
+00:02 +7: test/transfer_test.dart: signature does not authorize changed transcript or another identity
+00:03 +8: test/transfer_test.dart: symlink destination is rejected
+00:03 +9: test/transfer_test.dart: oversized untrusted frame is rejected before body allocation
+00:03 +10: test/transfer_test.dart: portable safe names reject traversal, reserved devices, controls and bidi
+00:03 +11: test/transfer_test.dart: local address and invitation validation
+00:03 +12: test/transfer_test.dart: manifest bounds reject count, negative sizes and invalid checksums
+00:03 +13: test/transfer_test.dart: streaming benchmark 104857600 bytes
+{"bytes":104857600,"elapsedMs":9128,"baselineRss":218505216,"peakRss":224755712,"scope":"Linux loopback, not physical P2P"}
+00:13 +14: test/transfer_test.dart: (tearDownAll)
+00:13 +14: All tests passed!

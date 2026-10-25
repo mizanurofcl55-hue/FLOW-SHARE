@@ -1,0 +1,103 @@
+name: Android installed-app smoke test
+on:
+  workflow_run:
+    workflows: [Verify and build FlowShare]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      build_run_id:
+        description: Successful Verify and build FlowShare run ID
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+jobs:
+  installed-app:
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_repository.full_name == github.repository)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    outputs:
+      build_sha: ${{ steps.source.outputs.sha }}
+      build_run_id: ${{ steps.source.outputs.run_id }}
+    steps:
+      - name: Validate the source build
+        id: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_RUN_ID: ${{ github.event.workflow_run.id || inputs.build_run_id }}
+        run: |
+          python3 - <<'PY'
+          import json, os, re, subprocess
+          repo = os.environ['GITHUB_REPOSITORY']
+          run_id = os.environ['BUILD_RUN_ID']
+          assert re.fullmatch(r'[0-9]+', run_id), 'Invalid build run ID'
+          run = json.loads(subprocess.check_output(['gh', 'api', f'repos/{repo}/actions/runs/{run_id}']))
+          assert run['conclusion'] == 'success', 'Build must pass before installation'
+          assert run['head_branch'] == 'main', 'Only main builds are supported'
+          assert run['event'] in ('push', 'workflow_dispatch'), 'Pull request builds are not eligible'
+          assert run['head_repository']['full_name'] == repo, 'Repository mismatch'
+          assert run['path'] == '.github/workflows/ci.yml', 'Unexpected workflow'
+          assert re.fullmatch(r'[0-9a-f]{40}', run['head_sha']), 'Invalid source SHA'
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write(f"sha={run['head_sha']}\nrun_id={run_id}\n")
+          PY
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ steps.source.outputs.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: FlowShare-android-preview
+          path: apk
+          run-id: ${{ github.event.workflow_run.id || inputs.build_run_id }}
+          github-token: ${{ github.token }}
+      - name: Enable emulator acceleration
+        run: |
+          sudo chown "$USER" /dev/kvm
+          sudo chmod 600 /dev/kvm
+      - name: Install and exercise FlowShare
+        uses: reactivecircus/android-emulator-runner@4c44018e59b437e86cdfc41da381398f93ed8808
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_7_pro
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
+          script: python3 tool/android_smoke.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: FlowShare-android-smoke-evidence
+          path: smoke-evidence/
+          if-no-files-found: error
+          retention-days: 30
+  publish-preview:
+    needs: installed-app
+    if: github.repository == 'mizanurofcl55-hue/FLOW-SHARE'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+    concurrency:
+      group: public-preview-v0.1.0-preview.1
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ needs.installed-app.outputs.build_sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: FlowShare-*-preview
+          path: release-artifacts
+          run-id: ${{ needs.installed-app.outputs.build_run_id }}
+          github-token: ${{ github.token }}
+      - name: Validate and publish the public preview
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_SHA: ${{ needs.installed-app.outputs.build_sha }}
+          BUILD_RUN_ID: ${{ needs.installed-app.outputs.build_run_id }}
+        run: python3 tool/publish_preview.py

@@ -1,0 +1,122 @@
+{
+  "app_source_commit": "f7aeb28cde53ed52fd6b20632c2537b9cdd22ddf",
+  "build_run_id": 40101280986,
+  "build_run_url": "https://github.com/MizanurOfcL55/flowShare/actions/runs/40101280986",
+  "automated_tests": {
+    "core": 14,
+    "flutter_ui_sqlite": 7,
+    "qr_image_decode": 2,
+    "result": "passed",
+    "additional_large_file_tests": {
+      "count": 2,
+      "sizes_gib": [
+        1,
+        5
+      ],
+      "scope": "Previously passed on the unchanged transfer engine; one-process Linux loopback, not physical devices."
+    }
+  },
+  "native_builds": [
+    {
+      "platform": "android",
+      "result": "passed"
+    },
+    {
+      "platform": "ios",
+      "result": "passed"
+    },
+    {
+      "platform": "windows",
+      "result": "passed"
+    },
+    {
+      "platform": "macos",
+      "result": "passed"
+    }
+  ],
+  "privacy_checks": {
+    "no_ml_kit": true,
+    "no_google_data_transport": true,
+    "no_record_audio_permission": true,
+    "no_broad_write_or_manage_storage_permissions": true,
+    "runtime_dependency_graph_sha256": "c608ea156eb42f203b72d29eaa3e08bcb26e24a36e877468962ade4bbd964f08"
+  },
+  "artifacts": [
+    {
+      "id": 12563466462,
+      "name": "FlowShare-android-preview",
+      "size_bytes": 218807581,
+      "archive_digest": "sha256:bb389f2e069e0fd92b57424e94b3523699c50c03bb7715958d8b4bca6cc67228",
+      "expires_at": "2026-11-23T14:19:47Z"
+    },
+    {
+      "id": 12562906295,
+      "name": "FlowShare-macos-preview",
+      "size_bytes": 59517988,
+      "archive_digest": "sha256:2ab5fdb8aa0022f76ed9f442d766d35489ed60ff0d799e26f4440c1f02608dc6",
+      "expires_at": "2026-11-23T14:11:49Z"
+    },
+    {
+      "id": 12562766650,
+      "name": "FlowShare-ios-preview",
+      "size_bytes": 57392043,
+      "archive_digest": "sha256:2ef6c5f9d623e2a4c9abea18e0c6f8eedc2fdbca64ca13e1a229892ed6697bef",
+      "expires_at": "2026-11-23T14:11:56Z"
+    },
+    {
+      "id": 12562619454,
+      "name": "FlowShare-windows-preview",
+      "size_bytes": 14847348,
+      "archive_digest": "sha256:df1d36b93cc65190d29f6f3e51c118bffdcdbcf62478c602db7069e826b12dbe",
+      "expires_at": "2026-11-23T14:14:57Z"
+    }
+  ],
+  "delivered_android_preview": {
+    "source_commit": "f7aeb28cde53ed52fd6b20632c2537b9cdd22ddf",
+    "build_run": 40101280986,
+    "archive_sha256": "bb389f2e069e0fd92b57424e94b3523699c50c03bb7715958d8b4bca6cc67228",
+    "apk_name": "FlowShare-0.1.0-Android-arm64-Preview.apk",
+    "apk_sha256": "77d776988689eede6b6e408807992b223fd89fbf8e4d5c747202ec1967d52b87",
+    "apk_size_bytes": 113117884,
+    "all_build_checksums_verified": true,
+    "apk_checksums": {
+      "app-armeabi-v7a-debug.apk": "68b349f9fae2b5ea70ed2fc6205431d664418d27b46bc8967570c89b45d0cda0",
+      "app-x86_64-debug.apk": "50d095431bc9e7a3c34e2f2ad81b0e3c1454dc8eec4102fde7655a541dece7dc",
+      "android-runtime-dependencies.txt": "c608ea156eb42f203b72d29eaa3e08bcb26e24a36e877468962ade4bbd964f08",
+      "app-arm64-v8a-debug.apk": "77d776988689eede6b6e408807992b223fd89fbf8e4d5c747202ec1967d52b87"
+    },
+    "android_smoke": {
+      "status": "passed",
+      "checks": [
+        "Native installation, secure-storage/database initialization, onboarding and home",
+        "History empty state",
+        "Settings navigation",
+        "Native receive listener and QR invitation",
+        "Listener stop",
+        "Restart retains onboarding and initializes persisted identity"
+      ],
+      "apk_sha256": "50d095431bc9e7a3c34e2f2ad81b0e3c1454dc8eec4102fde7655a541dece7dc",
+      "scope": "Android emulator only; not physical cross-device transfer"
+    }
+  },
+  "installed_android_smoke": {
+    "status": "passed",
+    "checks": [
+      "Native installation, secure-storage/database initialization, onboarding and home",
+      "History empty state",
+      "Settings navigation",
+      "Native receive listener and QR invitation",
+      "Listener stop",
+      "Restart retains onboarding and initializes persisted identity"
+    ],
+    "apk_sha256": "50d095431bc9e7a3c34e2f2ad81b0e3c1454dc8eec4102fde7655a541dece7dc",
+    "scope": "Android emulator only; not physical cross-device transfer",
+    "run_id": 40102025315,
+    "run_url": "https://github.com/MizanurOfcL55/flowShare/actions/runs/40102025315",
+    "artifact_id": 12563680209,
+    "artifact_digest": "sha256:981d3fef68b2ae8c43c51cedce323d51aadf473440c7beae692ed04b2bb2b8c2",
+    "device": "Android 15 / API 35 Pixel 7 Pro x86_64 emulator",
+    "screenshots_visually_reviewed": true
+  },
+  "scope": "LAN/hotspot preview. Android debug signing; Windows portable release build; Apple unsigned previews. Physical interoperability, native direct transports, production signing and security audit remain incomplete."
+}

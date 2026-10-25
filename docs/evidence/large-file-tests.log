@@ -1,0 +1,8 @@
+00:00 +0: loading test/transfer_test.dart
+00:00 +0: test/transfer_test.dart: (setUpAll)
+00:00 +0: test/transfer_test.dart: streaming benchmark 1073741824 bytes
+{"bytes":1073741824,"elapsedMs":85374,"baselineRss":196468736,"peakRss":231256064,"scope":"Linux loopback, not physical P2P"}
+01:39 +1: test/transfer_test.dart: streaming benchmark 5368709120 bytes
+{"bytes":5368709120,"elapsedMs":434039,"baselineRss":218824704,"peakRss":242503680,"scope":"Linux loopback, not physical P2P"}
+09:56 +2: test/transfer_test.dart: (tearDownAll)
+09:56 +2: All tests passed!

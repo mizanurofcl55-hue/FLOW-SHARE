@@ -1,0 +1,4 @@
+00:00 +0: loading apps/flutter_app/test/qr_decode_test.dart
+00:00 +0: local Dart decoder reads a rendered Unicode pairing invitation
+00:00 +1: a decoded external QR is rejected as a pairing invitation
+00:00 +2: All tests passed!

@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "checks": [
+    "Native installation, secure-storage/database initialization, onboarding and home",
+    "History empty state",
+    "Settings navigation",
+    "Native receive listener and QR invitation",
+    "Listener stop",
+    "Restart retains onboarding and initializes persisted identity"
+  ],
+  "apk_sha256": "50d095431bc9e7a3c34e2f2ad81b0e3c1454dc8eec4102fde7655a541dece7dc",
+  "scope": "Android emulator only; not physical cross-device transfer"
+}

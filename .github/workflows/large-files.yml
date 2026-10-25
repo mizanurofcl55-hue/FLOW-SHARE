@@ -1,0 +1,29 @@
+name: Large file streaming benchmark
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+env:
+  CI: 'true'
+  FLUTTER_SUPPRESS_ANALYTICS: 'true'
+  DART_SUPPRESS_ANALYTICS: 'true'
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2
+        with:
+          flutter-version: 3.47.7
+      - run: dart pub get --enforce-lockfile
+        working-directory: packages/transfer_core
+      - run: dart test --reporter expanded --name 'streaming benchmark (1073741824|5368709120)' | tee benchmark.log
+        working-directory: packages/transfer_core
+        env:
+          FLOWSHARE_LARGE_TESTS: '1'
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: loopback-benchmark
+          path: packages/transfer_core/benchmark.log

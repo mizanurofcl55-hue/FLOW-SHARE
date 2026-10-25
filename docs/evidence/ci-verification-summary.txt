@@ -1,0 +1,12 @@
+Source commit: f7aeb28cde53ed52fd6b20632c2537b9cdd22ddf
+Workflow: https://github.com/MizanurOfcL55/flowShare/actions/runs/40101280986
+Selected verification log lines (full log is in the workflow):
+2026-10-24T14:11:48.6179965Z No issues found!
+2026-10-24T14:11:57.9013869Z 00:03 +13: test/transfer_test.dart: streaming benchmark 104857600 bytes
+2026-10-24T14:12:06.5148821Z 00:11 +14: All tests passed!
+2026-10-24T14:12:07.9048819Z Formatted 16 files (0 changed) in 0.08 seconds.
+2026-10-24T14:12:22.6706027Z No issues found! (ran in 14.4s)
+2026-10-24T14:12:41.3149389Z 00:01 +2: /home/runner/work/flowShare/flowShare/apps/flutter_app/test/widget_test.dart: routed pages react to controller changes
+2026-10-24T14:12:42.6958964Z 00:02 +7: /home/runner/work/flowShare/flowShare/apps/flutter_app/test/qr_decode_test.dart: local Dart decoder reads a rendered Unicode pairing invitation
+2026-10-24T14:12:42.8938011Z 00:03 +8: /home/runner/work/flowShare/flowShare/apps/flutter_app/test/qr_decode_test.dart: a decoded external QR is rejected as a pairing invitation
+2026-10-24T14:12:42.9972351Z 00:03 +9: All tests passed!
